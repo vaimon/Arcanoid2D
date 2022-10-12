@@ -10,9 +10,12 @@ public class BlockScript : MonoBehaviour
     TMP_Text textComponent;
     public int hitsToDestroy;
     public int points;
+    private PlayerScript _playerScript;
 
     void Start()
     {
+        _playerScript = GameObject.FindGameObjectWithTag("Player")
+            .GetComponent<PlayerScript>();
         if (textObject != null)
         {
             textComponent = textObject.GetComponent<TMP_Text>();
@@ -25,7 +28,10 @@ public class BlockScript : MonoBehaviour
         {
             hitsToDestroy--;
             if (hitsToDestroy == 0)
+            {
                 Destroy(gameObject);
+                _playerScript.BlockDestroyed(points);
+            }
             else if (textComponent != null)
                 textComponent.text = hitsToDestroy.ToString();
         }

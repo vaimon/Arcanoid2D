@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5278522616440839659}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -4.35, z: 0}
+  m_LocalPosition: {x: 0.5, y: -4.32, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -139,3 +139,4 @@ MonoBehaviour:
   ballInitialForce: {x: 100, y: 300}
   hitSound: {fileID: 8300000, guid: 6188864236bf4064a80ec7ca9a48c3d3, type: 3}
   loseSound: {fileID: 8300000, guid: 65ff98915c732704994657c2e5ef954c, type: 3}
+  gameData: {fileID: 11400000, guid: 030de8ff0df27504e872370adbd1d382, type: 2}
