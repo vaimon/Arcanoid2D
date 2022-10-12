@@ -22,9 +22,11 @@ public class PlayerScript : MonoBehaviour
     static Collider2D[] colliders = new Collider2D[50];
     static ContactFilter2D contactFilter = new ContactFilter2D();
     static bool gameStarted = false;
-    
+
     int requiredPointsToBall
-    { get { return 400 + (level - 1) * 20; } }
+    {
+        get { return 400 + (level - 1) * 20; }
+    }
 
     void CreateBlocks(GameObject prefab, float xMax, float yMax,
         int count, int maxCount)
@@ -97,7 +99,7 @@ public class PlayerScript : MonoBehaviour
             SceneManager.LoadScene("MainScene");
         }
     }
-    
+
     IEnumerator BlockDestroyedCoroutine2()
     {
         for (int i = 0; i < 10; i++)
@@ -120,6 +122,7 @@ public class PlayerScript : MonoBehaviour
             if (gameData.sound)
                 StartCoroutine(BlockDestroyedCoroutine2());
         }
+
         StartCoroutine(BlockDestroyedCoroutine());
     }
 
@@ -162,10 +165,14 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var pos = transform.position;
-        pos.x = mousePos.x;
-        transform.position = pos;
+        if (Time.timeScale > 0)
+        {
+            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var pos = transform.position;
+            pos.x = mousePos.x;
+            transform.position = pos;
+        }
+
         if (Input.GetKeyDown(KeyCode.M))
         {
             gameData.music = !gameData.music;
@@ -174,6 +181,8 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
             gameData.sound = !gameData.sound;
+
+        if (Input.GetButtonDown("Pause")) Time.timeScale = Time.timeScale > 0 ? 0 : 1;
     }
 
     void OnGUI()
