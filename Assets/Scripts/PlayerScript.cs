@@ -22,6 +22,9 @@ public class PlayerScript : MonoBehaviour
     static Collider2D[] colliders = new Collider2D[50];
     static ContactFilter2D contactFilter = new ContactFilter2D();
     static bool gameStarted = false;
+    
+    int requiredPointsToBall
+    { get { return 400 + (level - 1) * 20; } }
 
     void CreateBlocks(GameObject prefab, float xMax, float yMax,
         int count, int maxCount)
@@ -94,12 +97,29 @@ public class PlayerScript : MonoBehaviour
             SceneManager.LoadScene("MainScene");
         }
     }
+    
+    IEnumerator BlockDestroyedCoroutine2()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(0.2f);
+            audioSrc.PlayOneShot(pointSound, 5);
+        }
+    }
 
     public void BlockDestroyed(int points)
     {
         gameData.points += points;
         if (gameData.sound)
             audioSrc.PlayOneShot(pointSound, 5);
+        gameData.pointsToBall += points;
+        if (gameData.pointsToBall >= requiredPointsToBall)
+        {
+            gameData.balls++;
+            gameData.pointsToBall -= requiredPointsToBall;
+            if (gameData.sound)
+                StartCoroutine(BlockDestroyedCoroutine2());
+        }
         StartCoroutine(BlockDestroyedCoroutine());
     }
 

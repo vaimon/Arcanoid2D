@@ -9,6 +9,7 @@ public class GameDataScript : ScriptableObject
     public int level = 1;
     public int balls = 6;
     public int points = 0;
+    public int pointsToBall = 0;
     public bool music = true;
     public bool sound = true;
 
@@ -17,5 +18,6 @@ public class GameDataScript : ScriptableObject
         level = 1;
         balls = 6;
         points = 0;
+        pointsToBall = 0;
     }
 }
