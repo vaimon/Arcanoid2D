@@ -102,9 +102,9 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator BlockDestroyedCoroutine2()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 8; i++)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.3f);
             audioSrc.PlayOneShot(pointSound, 5);
         }
     }
@@ -153,7 +153,7 @@ public class PlayerScript : MonoBehaviour
         {
             gameStarted = true;
             if (gameData.resetOnStart)
-                gameData.Reset();
+                gameData.Load();
         }
 
         level = gameData.level;
@@ -183,8 +183,29 @@ public class PlayerScript : MonoBehaviour
             gameData.sound = !gameData.sound;
 
         if (Input.GetButtonDown("Pause")) Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+        
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            gameData.Reset();
+            SceneManager.LoadScene("MainScene");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+
+        }
+            
     }
 
+    string OnOff(bool boolVal)
+    {
+        return boolVal ? "on" : "off";
+    }
+    
     void OnGUI()
     {
         GUI.Label(new Rect(5, 4, Screen.width - 10, 100),
@@ -192,5 +213,22 @@ public class PlayerScript : MonoBehaviour
                 "<color=yellow><size=30>Level <b>{0}</b> Balls <b>{1}</b>" +
                 " Score <b>{2}</b></size></color>",
                 gameData.level, gameData.balls, gameData.points));
+        GUIStyle style = new GUIStyle();
+        style.alignment = TextAnchor.UpperRight;
+        GUI.Label(new Rect(5, 14, Screen.width - 10, 100),
+            string.Format(
+                "<color=yellow><size=20><color=white>Space</color>-pause {0}" +
+            " <color=white>N</color>-new" +
+            " <color=white>J</color>-jump" +
+            " <color=white>M</color>-music {1}" +
+            " <color=white>S</color>-sound {2}" +
+            " <color=white>Esc</color>-exit</size></color>",
+        OnOff(Time.timeScale > 0), OnOff(!gameData.music),
+        OnOff(!gameData.sound)), style);
+    }
+    
+    void OnApplicationQuit()
+    {
+        gameData.Save();
     }
 }
