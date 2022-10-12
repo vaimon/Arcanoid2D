@@ -8,11 +8,17 @@ public class BallScript : MonoBehaviour
     Rigidbody2D rb;
     GameObject playerObj;
     float deltaX;
+    AudioSource audioSrc;
+    public AudioClip hitSound;
+    public AudioClip loseSound;
+
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerObj = GameObject.FindGameObjectWithTag("Player");
         deltaX = transform.position.x;
+        audioSrc = Camera.main.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -33,7 +39,14 @@ public class BallScript : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D other)
     {
+        audioSrc.PlayOneShot(loseSound);
         Destroy(gameObject);
     }
+    
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        audioSrc.PlayOneShot(hitSound);
+    }
+
 
 }
