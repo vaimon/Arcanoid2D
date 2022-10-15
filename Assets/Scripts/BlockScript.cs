@@ -10,6 +10,7 @@ public class BlockScript : MonoBehaviour
     TMP_Text textComponent;
     public int hitsToDestroy;
     public int points;
+    public bool isBonusBlock = false;
     private PlayerScript _playerScript;
 
     void Start()
@@ -25,15 +26,17 @@ public class BlockScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        hitsToDestroy--;
+        if (hitsToDestroy == 0)
         {
-            hitsToDestroy--;
-            if (hitsToDestroy == 0)
+            if (isBonusBlock)
             {
-                Destroy(gameObject);
-                _playerScript.BlockDestroyed(points);
+                _playerScript.SpawnBonus(transform.position);
             }
-            else if (textComponent != null)
-                textComponent.text = hitsToDestroy.ToString();
+            Destroy(gameObject);
+            _playerScript.BlockDestroyed(points);
         }
+        else if (textComponent != null)
+            textComponent.text = hitsToDestroy.ToString();
     }
 }

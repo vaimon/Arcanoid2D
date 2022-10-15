@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,12 +12,14 @@ public class PlayerScript : MonoBehaviour
 
     [Range(1, MaxLevel)] public int level = 1;
     public AudioClip pointSound;
+    public AudioClip bonusSound;
     public float ballVelocityMult = 0.02f;
     public GameObject bluePrefab;
     public GameObject redPrefab;
     public GameObject greenPrefab;
     public GameObject yellowPrefab;
     public GameObject ballPrefab;
+    public GameObject bonusPrefab;
     public GameDataScript gameData;
 
     static Collider2D[] colliders = new Collider2D[50];
@@ -109,12 +112,24 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void SpawnBonus(Vector3 position)
+    {
+        var bonus = Instantiate(bonusPrefab, position, Quaternion.identity);
+        bonus.AddComponent(BonusFactory.getBonusScript());
+    }
+
     public void BlockDestroyed(int points)
     {
-        gameData.points += points;
+        AddPoints(points);
         if (gameData.sound)
             audioSrc.PlayOneShot(pointSound, 5);
-        gameData.pointsToBall += points;
+        StartCoroutine(BlockDestroyedCoroutine());
+    }
+
+    public void AddPoints(int pointsNumber)
+    {
+        gameData.points += pointsNumber;
+        gameData.pointsToBall += pointsNumber;
         if (gameData.pointsToBall >= requiredPointsToBall)
         {
             gameData.balls++;
@@ -122,8 +137,6 @@ public class PlayerScript : MonoBehaviour
             if (gameData.sound)
                 StartCoroutine(BlockDestroyedCoroutine2());
         }
-
-        StartCoroutine(BlockDestroyedCoroutine());
     }
 
     void SetBackground()
@@ -160,9 +173,7 @@ public class PlayerScript : MonoBehaviour
         SetMusic();
         StartLevel();
     }
-
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (Time.timeScale > 0)
@@ -196,7 +207,6 @@ public class PlayerScript : MonoBehaviour
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
-
         }
             
     }
@@ -225,6 +235,14 @@ public class PlayerScript : MonoBehaviour
             " <color=white>Esc</color>-exit</size></color>",
         OnOff(Time.timeScale > 0), OnOff(!gameData.music),
         OnOff(!gameData.sound)), style);
+    }
+
+    public void playBonusSound()
+    {
+        if (gameData.sound)
+        {
+            audioSrc.PlayOneShot(bonusSound,5.0f);
+        }
     }
     
     void OnApplicationQuit()

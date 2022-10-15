@@ -261,7 +261,7 @@ Transform:
   m_GameObject: {fileID: 186331802}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 4.7, z: 0}
-  m_LocalScale: {x: 13, y: 1, z: 1}
+  m_LocalScale: {x: 11.6, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2021741914}
@@ -865,6 +865,7 @@ MonoBehaviour:
   greenPrefab: {fileID: 6152725118548190662, guid: 3409e51237e4a3e4e81dde9d765b9585, type: 3}
   yellowPrefab: {fileID: 2352597322545585237, guid: c64f6d33d5d4398478df07e2f9e3eabf, type: 3}
   ballPrefab: {fileID: 5278522616440839659, guid: 1dc007b0370237f43b6f7fb89f6bca5a, type: 3}
+  bonusPrefab: {fileID: 5442070789476711245, guid: 6342380c83ee242468dcbf8e5466c05d, type: 3}
   gameData: {fileID: 11400000, guid: 030de8ff0df27504e872370adbd1d382, type: 2}
 --- !u!1 &2021741913
 GameObject:
