@@ -31,6 +31,49 @@ public class PlayerScript : MonoBehaviour
         get { return 400 + (level - 1) * 20; }
     }
 
+    void Start()
+    {
+        Cursor.visible = false;
+        audioSrc = Camera.main.GetComponent<AudioSource>();
+        if (!gameStarted)
+        {
+            gameStarted = true;
+            if (gameData.resetOnStart)
+                gameData.Load();
+        }
+
+        level = gameData.level;
+        SetMusic();
+        StartLevel();
+    }
+
+    void StartLevel()
+    {
+        SetBackground();
+        var yMax = Camera.main.orthographicSize * 0.8f;
+        var xMax = Camera.main.orthographicSize * Camera.main.aspect * 0.85f;
+        CreateBlocks(bluePrefab, xMax, yMax, level, 8);
+        CreateBlocks(redPrefab, xMax, yMax, 1 + level, 10);
+        CreateBlocks(greenPrefab, xMax, yMax, 1 + level, 12);
+        CreateBlocks(yellowPrefab, xMax, yMax, 2 + level, 15);
+        CreateBalls();
+    }
+
+    void SetBackground()
+    {
+        var bg = GameObject.Find("Background").GetComponent<SpriteRenderer>();
+        bg.sprite = Resources.Load(level.ToString("d2"),
+            typeof(Sprite)) as Sprite;
+    }
+
+    void SetMusic()
+    {
+        if (gameData.music)
+            audioSrc.Play();
+        else
+            audioSrc.Stop();
+    }
+
     void CreateBlocks(GameObject prefab, float xMax, float yMax,
         int count, int maxCount)
     {
@@ -50,15 +93,6 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    void SetMusic()
-    {
-        if (gameData.music)
-            audioSrc.Play();
-        else
-            audioSrc.Stop();
-    }
-
-
     void CreateBalls()
     {
         int count = 2;
@@ -73,107 +107,6 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    IEnumerator BallDestroyedCoroutine()
-    {
-        yield return new WaitForSeconds(0.1f);
-        if (GameObject.FindGameObjectsWithTag("Ball").Length == 0)
-            if (gameData.balls > 0)
-                CreateBalls();
-            else
-            {
-                gameData.Reset();
-                SceneManager.LoadScene("MainScene");
-            }
-    }
-
-    public void BallDestroyed()
-    {
-        gameData.balls--;
-        StartCoroutine(BallDestroyedCoroutine());
-    }
-
-    IEnumerator BlockDestroyedCoroutine()
-    {
-        yield return new WaitForSeconds(0.1f);
-        if (GameObject.FindGameObjectsWithTag("Block").Length == 0)
-        {
-            if (level < MaxLevel)
-                gameData.level++;
-            SceneManager.LoadScene("MainScene");
-        }
-    }
-
-    IEnumerator BlockDestroyedCoroutine2()
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            yield return new WaitForSeconds(0.3f);
-            audioSrc.PlayOneShot(pointSound, 5);
-        }
-    }
-
-    public void SpawnBonus(Vector3 position)
-    {
-        var bonus = Instantiate(bonusPrefab, position, Quaternion.identity);
-        bonus.AddComponent(BonusFactory.getBonusScript());
-    }
-
-    public void BlockDestroyed(int points)
-    {
-        AddPoints(points);
-        if (gameData.sound)
-            audioSrc.PlayOneShot(pointSound, 5);
-        StartCoroutine(BlockDestroyedCoroutine());
-    }
-
-    public void AddPoints(int pointsNumber)
-    {
-        gameData.points += pointsNumber;
-        gameData.pointsToBall += pointsNumber;
-        if (gameData.pointsToBall >= requiredPointsToBall)
-        {
-            gameData.balls++;
-            gameData.pointsToBall -= requiredPointsToBall;
-            if (gameData.sound)
-                StartCoroutine(BlockDestroyedCoroutine2());
-        }
-    }
-
-    void SetBackground()
-    {
-        var bg = GameObject.Find("Background").GetComponent<SpriteRenderer>();
-        bg.sprite = Resources.Load(level.ToString("d2"),
-            typeof(Sprite)) as Sprite;
-    }
-
-    void StartLevel()
-    {
-        SetBackground();
-        var yMax = Camera.main.orthographicSize * 0.8f;
-        var xMax = Camera.main.orthographicSize * Camera.main.aspect * 0.85f;
-        CreateBlocks(bluePrefab, xMax, yMax, level, 8);
-        CreateBlocks(redPrefab, xMax, yMax, 1 + level, 10);
-        CreateBlocks(greenPrefab, xMax, yMax, 1 + level, 12);
-        CreateBlocks(yellowPrefab, xMax, yMax, 2 + level, 15);
-        CreateBalls();
-    }
-
-    void Start()
-    {
-        Cursor.visible = false;
-        audioSrc = Camera.main.GetComponent<AudioSource>();
-        if (!gameStarted)
-        {
-            gameStarted = true;
-            if (gameData.resetOnStart)
-                gameData.Load();
-        }
-
-        level = gameData.level;
-        SetMusic();
-        StartLevel();
-    }
-    
     void Update()
     {
         if (Time.timeScale > 0)
@@ -194,7 +127,7 @@ public class PlayerScript : MonoBehaviour
             gameData.sound = !gameData.sound;
 
         if (Input.GetButtonDown("Pause")) Time.timeScale = Time.timeScale > 0 ? 0 : 1;
-        
+
         if (Input.GetKeyDown(KeyCode.N))
         {
             gameData.Reset();
@@ -208,14 +141,8 @@ public class PlayerScript : MonoBehaviour
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
         }
-            
     }
 
-    string OnOff(bool boolVal)
-    {
-        return boolVal ? "on" : "off";
-    }
-    
     void OnGUI()
     {
         GUI.Label(new Rect(5, 4, Screen.width - 10, 100),
@@ -228,25 +155,96 @@ public class PlayerScript : MonoBehaviour
         GUI.Label(new Rect(5, 14, Screen.width - 10, 100),
             string.Format(
                 "<color=yellow><size=20><color=white>Space</color>-pause {0}" +
-            " <color=white>N</color>-new" +
-            " <color=white>J</color>-jump" +
-            " <color=white>M</color>-music {1}" +
-            " <color=white>S</color>-sound {2}" +
-            " <color=white>Esc</color>-exit</size></color>",
-        OnOff(Time.timeScale > 0), OnOff(!gameData.music),
-        OnOff(!gameData.sound)), style);
+                " <color=white>N</color>-new" +
+                " <color=white>J</color>-jump" +
+                " <color=white>M</color>-music {1}" +
+                " <color=white>S</color>-sound {2}" +
+                " <color=white>Esc</color>-exit</size></color>",
+                OnOff(Time.timeScale > 0), OnOff(!gameData.music),
+                OnOff(!gameData.sound)), style);
+    }
+
+    void OnApplicationQuit()
+    {
+        gameData.Save();
+    }
+
+    public void SpawnBonus(Vector3 position)
+    {
+        var bonus = Instantiate(bonusPrefab, position, Quaternion.identity);
+        bonus.AddComponent(BonusFactory.getBonusScript());
+    }
+
+    public void OnBlockDestroyed(int points)
+    {
+        AddPoints(points);
+        if (gameData.sound)
+            audioSrc.PlayOneShot(pointSound, 5);
+        StartCoroutine(CheckForLevelEndCoroutine());
+    }
+
+    public void OnBallDestroyed()
+    {
+        gameData.balls--;
+        StartCoroutine(BallDestroyedCoroutine());
+    }
+
+    public void AddPoints(int pointsNumber)
+    {
+        gameData.points += pointsNumber;
+        gameData.pointsToBall += pointsNumber;
+        if (gameData.pointsToBall >= requiredPointsToBall)
+        {
+            gameData.balls++;
+            gameData.pointsToBall -= requiredPointsToBall;
+            if (gameData.sound)
+                StartCoroutine(PlayAchievementSoundCoroutine());
+        }
     }
 
     public void playBonusSound()
     {
         if (gameData.sound)
         {
-            audioSrc.PlayOneShot(bonusSound,5.0f);
+            audioSrc.PlayOneShot(bonusSound, 5.0f);
+        }
+    }
+
+    IEnumerator BallDestroyedCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (GameObject.FindGameObjectsWithTag("Ball").Length == 0)
+            if (gameData.balls > 0)
+                CreateBalls();
+            else
+            {
+                gameData.Reset();
+                SceneManager.LoadScene("MainScene");
+            }
+    }
+
+    IEnumerator CheckForLevelEndCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (GameObject.FindGameObjectsWithTag("Block").Length == 0)
+        {
+            if (level < MaxLevel)
+                gameData.level++;
+            SceneManager.LoadScene("MainScene");
+        }
+    }
+
+    IEnumerator PlayAchievementSoundCoroutine()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            yield return new WaitForSeconds(0.3f);
+            audioSrc.PlayOneShot(pointSound, 5);
         }
     }
     
-    void OnApplicationQuit()
+    string OnOff(bool boolVal)
     {
-        gameData.Save();
+        return boolVal ? "on" : "off";
     }
 }

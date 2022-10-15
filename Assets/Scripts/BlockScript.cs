@@ -34,7 +34,7 @@ public class BlockScript : MonoBehaviour
                 _playerScript.SpawnBonus(transform.position);
             }
             Destroy(gameObject);
-            _playerScript.BlockDestroyed(points);
+            _playerScript.OnBlockDestroyed(points);
         }
         else if (textComponent != null)
             textComponent.text = hitsToDestroy.ToString();
