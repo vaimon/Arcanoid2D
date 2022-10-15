@@ -38,9 +38,12 @@ public class BonusBaseScript : MonoBehaviour
 
     void Update()
     {
-        var pos = transform.position;
-        pos.y = gameObject.transform.position.y - deltaY;
-        transform.position = pos;
+        if (Time.timeScale > 0)
+        {
+            var pos = transform.position;
+            pos.y = gameObject.transform.position.y - deltaY;
+            transform.position = pos;
+        }
     }
     
     void OnTriggerEnter2D(Collider2D other)

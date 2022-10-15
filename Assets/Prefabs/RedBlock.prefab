@@ -128,7 +128,7 @@ MonoBehaviour:
   textObject: {fileID: 3447278984650904536}
   hitsToDestroy: 4
   points: 40
-  isBonusBlock: 1
+  isBonusBlock: 0
 --- !u!1 &3447278984650904536
 GameObject:
   m_ObjectHideFlags: 0

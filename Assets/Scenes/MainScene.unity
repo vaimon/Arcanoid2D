@@ -859,6 +859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 1
   pointSound: {fileID: 8300000, guid: 4af888ed68af61b498db6be1bd4f8aed, type: 3}
+  bonusSound: {fileID: 8300000, guid: e82bb17862067744d923b441bf24311a, type: 3}
   ballVelocityMult: 0.02
   bluePrefab: {fileID: 616750314239455022, guid: 09505152e11841942acded37fe0cee23, type: 3}
   redPrefab: {fileID: 3447278983400174134, guid: 15167884b37322444b4e39ff4908ea74, type: 3}
