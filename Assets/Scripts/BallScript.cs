@@ -39,11 +39,7 @@ public class BallScript : MonoBehaviour
         if (!rb.isKinematic && Input.GetKeyDown(KeyCode.J))
         {
             var v = rb.velocity;
-            if (Random.Range(0,2) == 0)
-                v.Set(v.x - 0.1f, v.y + 0.1f);
-            else
-                v.Set(v.x + 0.1f, v.y - 0.1f);
-            rb.velocity = v;
+            rb.velocity = Quaternion.AngleAxis(Random.Range(1,359), Vector3.forward) * v;
         }
     }
 

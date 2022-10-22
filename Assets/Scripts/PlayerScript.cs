@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using DefaultNamespace;
+using Bonuses;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -195,10 +195,41 @@ public class PlayerScript : MonoBehaviour
         gameData.pointsToBall += pointsNumber;
         if (gameData.pointsToBall >= requiredPointsToBall)
         {
-            gameData.balls++;
+            addBallsToStash(1);
             gameData.pointsToBall -= requiredPointsToBall;
             if (gameData.sound)
                 StartCoroutine(PlayAchievementSoundCoroutine());
+        }
+    }
+
+    public void changeBallsVelocity(float shift)
+    {
+        var balls = GameObject.FindGameObjectsWithTag("Ball");
+        foreach (var ball in balls)
+        {
+            var rigidbody2D = ball.GetComponent<Rigidbody2D>();
+            var velocity = rigidbody2D.velocity;
+            velocity.Set(velocity.x * (1 + shift), velocity.y * (1 + shift));
+            rigidbody2D.velocity = velocity;
+        }
+    }
+
+    public void addBallsToStash(int number)
+    {
+        gameData.balls += number;
+    }
+
+    public void addBallsToGame(int number)
+    {
+        addBallsToStash(number);
+        var ball = GameObject.FindGameObjectsWithTag("Ball")[0];
+        var ballRb = ball.GetComponent<Rigidbody2D>();
+        for (int i = 0; i < number; i++)
+        {
+            var newBall = Instantiate(ballPrefab, ball.transform.position, Quaternion.identity);
+            var newBallRb = newBall.GetComponent<Rigidbody2D>();
+            newBallRb.isKinematic = false;
+            newBallRb.velocity = Quaternion.AngleAxis(Random.Range(1,359), Vector3.forward) *ballRb.velocity;
         }
     }
 
@@ -242,7 +273,7 @@ public class PlayerScript : MonoBehaviour
             audioSrc.PlayOneShot(pointSound, 5);
         }
     }
-    
+
     string OnOff(bool boolVal)
     {
         return boolVal ? "on" : "off";

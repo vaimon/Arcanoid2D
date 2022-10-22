@@ -6,33 +6,35 @@ using UnityEngine;
 
 public class BonusBaseScript : MonoBehaviour
 {
-    Color color = Color.yellow;
-    String text = "+100";
-
-    private PlayerScript _playerScript;
-    private AudioSource _audioSource;
+    protected Color color = Color.yellow;
+    protected Color textColor = Color.black;
+    protected String text = "+100";
+    protected PlayerScript _playerScript;
 
     private const int pointsPerActivation = 100;
-    private const float deltaY = 0.01f;
+    private const float deltaY = 0.02f;
 
-    public virtual void BonusActivate()
+    protected virtual void BonusActivate()
     {
         _playerScript.AddPoints(pointsPerActivation);
     }
 
+    protected virtual void initializeFields(){}
+
     void initializeBonus()
     {
+        initializeFields();
         gameObject.GetComponent<SpriteRenderer>().color = color;
         var textComponent = gameObject.transform.GetComponentInChildren<TextMeshProUGUI>();
         textComponent.text = text;
-        textComponent.color = Color.black;
+        textComponent.color = textColor;
     }
 
     void Start()
     {
         _playerScript = GameObject.FindGameObjectWithTag("Player")
             .GetComponent<PlayerScript>();
-        _audioSource = gameObject.GetComponent<AudioSource>();
+        // _audioSource = gameObject.GetComponent<AudioSource>();
         initializeBonus();
     }
 
