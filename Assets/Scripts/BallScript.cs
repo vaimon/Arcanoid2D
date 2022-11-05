@@ -10,8 +10,8 @@ public class BallScript : MonoBehaviour
     public GameDataScript gameData;
 
     Rigidbody2D rb;
-    GameObject playerObj;
-    float deltaX;
+    public GameObject playerObj;
+    public float deltaX;
     AudioSource audioSrc;
 
     void Start()
@@ -25,7 +25,7 @@ public class BallScript : MonoBehaviour
     void Update()
     {
         if (rb.isKinematic)
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && !MenuControls.flagMenu)
             {
                 rb.isKinematic = false;
                 rb.AddForce(ballInitialForce);
@@ -46,7 +46,7 @@ public class BallScript : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (gameData.sound)
-            audioSrc.PlayOneShot(loseSound, 5);
+            audioSrc.PlayOneShot(loseSound, PlayerScript.volumeScale);
         Destroy(gameObject);
         playerObj.GetComponent<PlayerScript>().OnBallDestroyed();
     }
@@ -54,6 +54,6 @@ public class BallScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (gameData.sound)
-            audioSrc.PlayOneShot(hitSound, 5);
+            audioSrc.PlayOneShot(hitSound, PlayerScript.volumeScale);
     }
 }

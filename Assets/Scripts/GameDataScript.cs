@@ -12,7 +12,9 @@ public class GameDataScript : ScriptableObject
     public int pointsToBall = 0;
     public bool music = true;
     public bool sound = true;
-
+    public float musicValue = 10f;
+    public float soundValue = 10f;
+    
     public void Reset()
     {
         level = 1;
@@ -21,7 +23,7 @@ public class GameDataScript : ScriptableObject
         pointsToBall = 0;
     }
     
-    public void Load()
+    /*public void Load()
     {
         level = PlayerPrefs.GetInt("level", 1);
         balls = PlayerPrefs.GetInt("balls", 6);
@@ -29,9 +31,9 @@ public class GameDataScript : ScriptableObject
         pointsToBall = PlayerPrefs.GetInt("pointsToBall", 0);
         music = PlayerPrefs.GetInt("music", 1) == 1;
         sound = PlayerPrefs.GetInt("sound", 1) == 1;
-    }
+    }*/
     
-    public void Save()
+    /*public void Save()
     {
         PlayerPrefs.SetInt("level", level);
         PlayerPrefs.SetInt("balls", balls);
@@ -39,6 +41,6 @@ public class GameDataScript : ScriptableObject
         PlayerPrefs.SetInt("pointsToBall", pointsToBall);
         PlayerPrefs.SetInt("music", music ? 1 : 0);
         PlayerPrefs.SetInt("sound", sound ? 1 : 0);
-    }
+    }*/
 
 }

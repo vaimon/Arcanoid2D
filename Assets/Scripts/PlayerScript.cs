@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Bonuses;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -20,12 +21,15 @@ public class PlayerScript : MonoBehaviour
     public GameObject yellowPrefab;
     public GameObject ballPrefab;
     public GameObject bonusPrefab;
+    public GameObject pauseCanvas;
     public GameDataScript gameData;
 
     static Collider2D[] colliders = new Collider2D[50];
     static ContactFilter2D contactFilter = new ContactFilter2D();
     static bool gameStarted = false;
 
+    public static float volumeScale = 10;
+    
     int requiredPointsToBall
     {
         get { return 400 + (level - 1) * 20; }
@@ -33,13 +37,22 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
+        pauseCanvas = GameObject.Find("PauseCanvas");
+        pauseCanvas.SetActive(false);
         audioSrc = Camera.main.GetComponent<AudioSource>();
         if (!gameStarted)
         {
             gameStarted = true;
             if (gameData.resetOnStart)
-                gameData.Load();
+                gameData.Reset();
+                //gameData.Load();
+            
+        }
+
+        if (!MenuControls.flagMenu)
+        {
+            GameObject.Find("Canvas").SetActive(false);
+            Cursor.visible = false;
         }
 
         level = gameData.level;
@@ -47,6 +60,15 @@ public class PlayerScript : MonoBehaviour
         StartLevel();
     }
 
+    void SetBackground()
+    {
+        var comp = GameObject.Find("Background");
+        
+        var bg = GameObject.Find("BackgroundImage").GetComponent<SpriteRenderer>();
+        bg.sprite = Resources.Load(level.ToString("d2"),
+            typeof(Sprite)) as Sprite;
+    }
+    
     void StartLevel()
     {
         SetBackground();
@@ -57,13 +79,6 @@ public class PlayerScript : MonoBehaviour
         CreateBlocks(greenPrefab, xMax, yMax, 1 + level, 12);
         CreateBlocks(yellowPrefab, xMax, yMax, 2 + level, 15);
         CreateBalls();
-    }
-
-    void SetBackground()
-    {
-        var bg = GameObject.Find("Background").GetComponent<SpriteRenderer>();
-        bg.sprite = Resources.Load(level.ToString("d2"),
-            typeof(Sprite)) as Sprite;
     }
 
     void SetMusic()
@@ -126,7 +141,26 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
             gameData.sound = !gameData.sound;
 
-        if (Input.GetButtonDown("Pause")) Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+        if (Input.GetButtonDown("Pause"))
+        {
+            if (PauseControls.flagPauseMenu)
+            {
+                pauseCanvas.SetActive(true);
+                pauseCanvas.GetComponent<CanvasGroup>().alpha = 1;
+                Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+            }
+            else
+            {
+                PauseControls.flagPauseMenu = true;
+                Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+            }
+            //Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+        }
+
+        /*if (Input.GetButtonDown("Fire1") && (!PauseControls.flagPauseMenu || MenuControls.flagMenu))
+        {
+            Time.timeScale = 1;
+        }*/
 
         if (Input.GetKeyDown(KeyCode.N))
         {
@@ -164,10 +198,10 @@ public class PlayerScript : MonoBehaviour
                 OnOff(!gameData.sound)), style);
     }
 
-    void OnApplicationQuit()
+    /*void OnApplicationQuit()
     {
         gameData.Save();
-    }
+    }*/
 
     public void SpawnBonus(Vector3 position)
     {
@@ -179,7 +213,7 @@ public class PlayerScript : MonoBehaviour
     {
         AddPoints(points);
         if (gameData.sound)
-            audioSrc.PlayOneShot(pointSound, 5);
+            audioSrc.PlayOneShot(pointSound, volumeScale);
         StartCoroutine(CheckForLevelEndCoroutine());
     }
 
@@ -237,7 +271,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (gameData.sound)
         {
-            audioSrc.PlayOneShot(bonusSound, 5.0f);
+            audioSrc.PlayOneShot(bonusSound, volumeScale);
         }
     }
 
@@ -270,7 +304,7 @@ public class PlayerScript : MonoBehaviour
         for (int i = 0; i < 8; i++)
         {
             yield return new WaitForSeconds(0.3f);
-            audioSrc.PlayOneShot(pointSound, 5);
+            audioSrc.PlayOneShot(pointSound, volumeScale);
         }
     }
 
