@@ -15,7 +15,9 @@ MonoBehaviour:
   resetOnStart: 1
   level: 1
   balls: 6
-  points: 30
-  pointsToBall: 30
+  points: 0
+  pointsToBall: 0
   music: 0
   sound: 1
+  musicValue: 10
+  soundValue: 10
