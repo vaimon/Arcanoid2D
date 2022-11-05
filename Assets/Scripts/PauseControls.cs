@@ -10,12 +10,9 @@ public class PauseControls : MonoBehaviour
     public AudioSource audioSource;
     public Slider musicPauseSlider;
     public Slider soundPauseSlider;
-    public Slider musicSlider;
-    public Slider soundSlider;
     
     public Toggle musicPauseToggle;
     public Toggle soundPauseToggle;
-    public Toggle soundToggle;
     
     public GameDataScript gameData;
 
@@ -32,6 +29,7 @@ public class PauseControls : MonoBehaviour
     public void PlayPausePressed()
     {
         GameObject.Find("PauseCanvas").SetActive(false);
+        gameData.playFirst = true;
         flagPauseMenu = false;
     }
     
@@ -39,6 +37,7 @@ public class PauseControls : MonoBehaviour
     {
         GameObject.Find("PauseCanvas").SetActive(false);
         flagPauseMenu = false;
+        gameData.playFirst = true;
         gameData.Reset();
         SceneManager.LoadScene("MainScene");
     }

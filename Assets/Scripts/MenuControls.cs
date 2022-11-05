@@ -13,26 +13,15 @@ public class MenuControls : MonoBehaviour
    public Slider soundSlider;
    public Toggle musicToggle;
    public Toggle soundToggle;
-   public Button btn;
+   public Button quitBtn;
    
    public GameDataScript gameData;
 
-   public bool firstOpen = true;
-   
-   public void Start()
-   {
-      if (firstOpen)
-      {
-         btn.gameObject.SetActive(false);
-         firstOpen = false;
-      }
-      else btn.gameObject.SetActive(true);
-   }
-   
    public void PlayPressed()
    {
       GameObject.Find("Canvas").SetActive(false);
       flagMenu = false;
+      quitBtn.gameObject.SetActive(true);
    }
    
    public void MusicVolume()

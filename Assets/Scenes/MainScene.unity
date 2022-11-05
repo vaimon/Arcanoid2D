@@ -1122,6 +1122,7 @@ RectTransform:
   - {fileID: 1920205375}
   - {fileID: 1973260053}
   - {fileID: 930997707}
+  - {fileID: 1298340924}
   m_Father: {fileID: 334176007}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1417,7 +1418,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 270206799}
-  - {fileID: 1298340924}
   m_Father: {fileID: 865651791}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1443,9 +1443,8 @@ MonoBehaviour:
   soundSlider: {fileID: 1920205376}
   musicToggle: {fileID: 1973260055}
   soundToggle: {fileID: 930997709}
-  btn: {fileID: 1298340920}
+  quitBtn: {fileID: 1298340920}
   gameData: {fileID: 11400000, guid: 030de8ff0df27504e872370adbd1d382, type: 2}
-  firstOpen: 1
 --- !u!1 &340095584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1793,11 +1792,8 @@ MonoBehaviour:
   audioSource: {fileID: 519420033}
   musicPauseSlider: {fileID: 1285575311}
   soundPauseSlider: {fileID: 104646341}
-  musicSlider: {fileID: 1597033651}
-  soundSlider: {fileID: 1920205376}
   musicPauseToggle: {fileID: 1221524371}
   soundPauseToggle: {fileID: 2114065216}
-  soundToggle: {fileID: 930997709}
   gameData: {fileID: 11400000, guid: 030de8ff0df27504e872370adbd1d382, type: 2}
 --- !u!1 &462032956
 GameObject:
@@ -3798,9 +3794,8 @@ MonoBehaviour:
   soundSlider: {fileID: 0}
   musicToggle: {fileID: 0}
   soundToggle: {fileID: 0}
-  btn: {fileID: 0}
+  quitBtn: {fileID: 0}
   gameData: {fileID: 0}
-  firstOpen: 1
 --- !u!114 &1285575311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4081,14 +4076,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298340919}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 122566525}
-  m_Father: {fileID: 334176007}
-  m_RootOrder: 1
+  m_Father: {fileID: 270206799}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5028,9 +5023,8 @@ MonoBehaviour:
   soundSlider: {fileID: 0}
   musicToggle: {fileID: 0}
   soundToggle: {fileID: 0}
-  btn: {fileID: 0}
+  quitBtn: {fileID: 0}
   gameData: {fileID: 0}
-  firstOpen: 1
 --- !u!1 &1629243708
 GameObject:
   m_ObjectHideFlags: 0
@@ -5179,6 +5173,7 @@ MonoBehaviour:
   bonusPrefab: {fileID: 5442070789476711245, guid: 6342380c83ee242468dcbf8e5466c05d, type: 3}
   pauseCanvas: {fileID: 1473176087}
   gameData: {fileID: 11400000, guid: 030de8ff0df27504e872370adbd1d382, type: 2}
+  quitBtn: {fileID: 1298340920}
 --- !u!1 &1645323865
 GameObject:
   m_ObjectHideFlags: 0

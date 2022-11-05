@@ -14,6 +14,7 @@ public class GameDataScript : ScriptableObject
     public bool sound = true;
     public float musicValue = 10f;
     public float soundValue = 10f;
+    public bool playFirst = false;
     
     public void Reset()
     {

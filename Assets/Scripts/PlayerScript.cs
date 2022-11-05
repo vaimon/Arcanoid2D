@@ -23,7 +23,8 @@ public class PlayerScript : MonoBehaviour
     public GameObject bonusPrefab;
     public GameObject pauseCanvas;
     public GameDataScript gameData;
-
+    public Button quitBtn;
+    
     static Collider2D[] colliders = new Collider2D[50];
     static ContactFilter2D contactFilter = new ContactFilter2D();
     static bool gameStarted = false;
@@ -39,6 +40,7 @@ public class PlayerScript : MonoBehaviour
     {
         pauseCanvas = GameObject.Find("PauseCanvas");
         pauseCanvas.SetActive(false);
+        quitBtn.gameObject.SetActive(false);
         audioSrc = Camera.main.GetComponent<AudioSource>();
         if (!gameStarted)
         {
@@ -147,9 +149,10 @@ public class PlayerScript : MonoBehaviour
             {
                 pauseCanvas.SetActive(true);
                 pauseCanvas.GetComponent<CanvasGroup>().alpha = 1;
+                gameData.playFirst = false;
                 Time.timeScale = Time.timeScale > 0 ? 0 : 1;
             }
-            else
+            else if (gameData.playFirst && !PauseControls.flagPauseMenu)
             {
                 PauseControls.flagPauseMenu = true;
                 Time.timeScale = Time.timeScale > 0 ? 0 : 1;
@@ -157,10 +160,6 @@ public class PlayerScript : MonoBehaviour
             //Time.timeScale = Time.timeScale > 0 ? 0 : 1;
         }
 
-        /*if (Input.GetButtonDown("Fire1") && (!PauseControls.flagPauseMenu || MenuControls.flagMenu))
-        {
-            Time.timeScale = 1;
-        }*/
 
         if (Input.GetKeyDown(KeyCode.N))
         {
