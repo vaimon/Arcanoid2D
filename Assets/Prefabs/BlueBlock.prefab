@@ -126,9 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textObject: {fileID: 0}
-  hitsToDestroy: 30
+  hitsToDestroy: 1
   points: 100
-  isBonusBlock: 0
+  isBonusBlock: 1
 --- !u!1 &616750315027485060
 GameObject:
   m_ObjectHideFlags: 0

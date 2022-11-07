@@ -228,4 +228,4 @@ MonoBehaviour:
   textObject: {fileID: 0}
   hitsToDestroy: 1
   points: 10
-  isBonusBlock: 0
+  isBonusBlock: 1

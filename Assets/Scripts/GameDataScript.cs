@@ -10,11 +10,14 @@ public class GameDataScript : ScriptableObject
     public int balls = 6;
     public int points = 0;
     public int pointsToBall = 0;
+    //включены ли музыка и звук
     public bool music = true;
     public bool sound = true;
+    //значение громкости музыки и звуков
     public float musicValue = 10f;
     public float soundValue = 10f;
-    public bool playFirst = false;
+    public bool playFirst = false; //для блокировки пробела при открытом паузном меню
+    public bool endMenu = false; //для проверки, что главное меню теперь заключительное
     
     public void Reset()
     {

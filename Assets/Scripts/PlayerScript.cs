@@ -22,6 +22,8 @@ public class PlayerScript : MonoBehaviour
     public GameObject ballPrefab;
     public GameObject bonusPrefab;
     public GameObject pauseCanvas;
+    public GameObject mainCanvas;
+    
     public GameDataScript gameData;
     public Button quitBtn;
     
@@ -38,6 +40,7 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
+        mainCanvas = GameObject.Find("Canvas");
         pauseCanvas = GameObject.Find("PauseCanvas");
         pauseCanvas.SetActive(false);
         quitBtn.gameObject.SetActive(false);
@@ -53,7 +56,7 @@ public class PlayerScript : MonoBehaviour
 
         if (!MenuControls.flagMenu)
         {
-            GameObject.Find("Canvas").SetActive(false);
+            mainCanvas.SetActive(false);
             Cursor.visible = false;
         }
 
@@ -73,6 +76,7 @@ public class PlayerScript : MonoBehaviour
     
     void StartLevel()
     {
+        
         SetBackground();
         var yMax = Camera.main.orthographicSize * 0.8f;
         var xMax = Camera.main.orthographicSize * Camera.main.aspect * 0.85f;
@@ -145,11 +149,14 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetButtonDown("Pause"))
         {
+            //print(gameData.playFirst + " " + PauseControls.flagPauseMenu);
             if (PauseControls.flagPauseMenu)
             {
+                Cursor.visible = true;
                 pauseCanvas.SetActive(true);
                 pauseCanvas.GetComponent<CanvasGroup>().alpha = 1;
                 gameData.playFirst = false;
+                PauseControls.flagPauseMenu = false;
                 Time.timeScale = Time.timeScale > 0 ? 0 : 1;
             }
             else if (gameData.playFirst && !PauseControls.flagPauseMenu)
@@ -157,7 +164,7 @@ public class PlayerScript : MonoBehaviour
                 PauseControls.flagPauseMenu = true;
                 Time.timeScale = Time.timeScale > 0 ? 0 : 1;
             }
-            //Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+            
         }
 
 
@@ -293,8 +300,18 @@ public class PlayerScript : MonoBehaviour
         if (GameObject.FindGameObjectsWithTag("Block").Length == 0)
         {
             if (level < MaxLevel)
+            {
                 gameData.level++;
-            SceneManager.LoadScene("MainScene");
+                SceneManager.LoadScene("MainScene");
+            }
+            else
+            {
+                Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+                mainCanvas.SetActive(true);
+                Cursor.visible = true;
+                gameData.endMenu = true;
+            }
+            
         }
     }
 
