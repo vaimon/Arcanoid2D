@@ -1792,8 +1792,12 @@ MonoBehaviour:
   audioSource: {fileID: 519420033}
   musicPauseSlider: {fileID: 1285575311}
   soundPauseSlider: {fileID: 104646341}
+  musicSlider: {fileID: 1597033651}
+  soundSlider: {fileID: 1920205376}
   musicPauseToggle: {fileID: 1221524371}
   soundPauseToggle: {fileID: 2114065216}
+  musicToggle: {fileID: 1973260055}
+  soundToggle: {fileID: 930997709}
   gameData: {fileID: 11400000, guid: 030de8ff0df27504e872370adbd1d382, type: 2}
 --- !u!1 &462032956
 GameObject:
@@ -5172,6 +5176,7 @@ MonoBehaviour:
   ballPrefab: {fileID: 5278522616440839659, guid: 1dc007b0370237f43b6f7fb89f6bca5a, type: 3}
   bonusPrefab: {fileID: 5442070789476711245, guid: 6342380c83ee242468dcbf8e5466c05d, type: 3}
   pauseCanvas: {fileID: 1473176087}
+  mainCanvas: {fileID: 0}
   gameData: {fileID: 11400000, guid: 030de8ff0df27504e872370adbd1d382, type: 2}
   quitBtn: {fileID: 1298340920}
 --- !u!1 &1645323865
