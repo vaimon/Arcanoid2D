@@ -25,7 +25,7 @@ public class BallScript : MonoBehaviour
     void Update()
     {
         if (rb.isKinematic)
-            if (Input.GetButtonDown("Fire1") && !MenuControls.flagMenu)
+            if (Input.GetButtonDown("Fire1"))
             {
                 rb.isKinematic = false;
                 rb.AddForce(ballInitialForce);

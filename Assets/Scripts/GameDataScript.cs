@@ -16,7 +16,7 @@ public class GameDataScript : ScriptableObject
     //значение громкости музыки и звуков
     public float musicValue = 10f;
     public float soundValue = 10f;
-    public bool playFirst = false; //для блокировки пробела при открытом паузном меню
+    // public bool playFirst = false; //для блокировки пробела при открытом паузном меню
     public bool endMenu = false; //для проверки, что главное меню теперь заключительное
     
     public void Reset()
@@ -25,6 +25,10 @@ public class GameDataScript : ScriptableObject
         balls = 6;
         points = 0;
         pointsToBall = 0;
+        music = true;
+        sound = true;
+        musicValue = 5f;
+        soundValue = 5f;
     }
     
     /*public void Load()

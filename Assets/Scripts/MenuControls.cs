@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class MenuControls : MonoBehaviour
 {
-   public static bool flagMenu = true;
    public AudioSource audioSource;
    public Slider musicSlider;
    public Slider soundSlider;
@@ -17,35 +16,21 @@ public class MenuControls : MonoBehaviour
    
    public GameDataScript gameData;
 
-   /*public void Start()
-   {
-      if (gameData.endMenu)
-      {
-         musicToggle.isOn = gameData.music;
-         MusicToggle();
-         soundToggle.isOn = gameData.sound;
-         SoundToggle();
-         musicSlider.value = gameData.musicValue;
-         soundSlider.value = gameData.soundValue;
-      }
-   */
-   
    public void PlayPressed()
    {
-      if (!gameData.endMenu)
-      {
-         GameObject.Find("Canvas").SetActive(false);
-         flagMenu = false;
-         Cursor.visible = false;
-         quitBtn.gameObject.SetActive(true);
-      }
-      else
-      {
-         GameObject.Find("Canvas").SetActive(false);
-         flagMenu = false;
-         gameData.Reset();
-         SceneManager.LoadScene("MainScene");
-      }
+      SceneManager.LoadScene("MainScene");
+      // if (!gameData.endMenu)
+      // {
+      //    GameObject.Find("Canvas").SetActive(false);
+      //    Cursor.visible = false;
+      //    quitBtn.gameObject.SetActive(true);
+      // }
+      // else
+      // {
+      //    GameObject.Find("Canvas").SetActive(false);
+      //    gameData.Reset();
+      //    SceneManager.LoadScene("MainScene");
+      // }
    }
    
    public void MusicVolume()

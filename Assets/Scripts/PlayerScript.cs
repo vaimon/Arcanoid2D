@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Bonuses;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -23,16 +26,15 @@ public class PlayerScript : MonoBehaviour
     public GameObject bonusPrefab;
     public GameObject pauseCanvas;
     public GameObject mainCanvas;
-    
+
     public GameDataScript gameData;
-    public Button quitBtn;
-    
+
     static Collider2D[] colliders = new Collider2D[50];
-    static ContactFilter2D contactFilter = new ContactFilter2D();
-    static bool gameStarted = false;
+    static ContactFilter2D contactFilter;
+    static bool gameStarted;
 
     public static float volumeScale = 10;
-    
+
     int requiredPointsToBall
     {
         get { return 400 + (level - 1) * 20; }
@@ -43,40 +45,34 @@ public class PlayerScript : MonoBehaviour
         mainCanvas = GameObject.Find("Canvas");
         pauseCanvas = GameObject.Find("PauseCanvas");
         pauseCanvas.SetActive(false);
-        quitBtn.gameObject.SetActive(false);
         audioSrc = Camera.main.GetComponent<AudioSource>();
+
         if (!gameStarted)
         {
             gameStarted = true;
             if (gameData.resetOnStart)
                 gameData.Reset();
-                //gameData.Load();
-            
+            SetMusic();
+            showMainMenu();
+            return;
         }
-
-        if (!MenuControls.flagMenu)
-        {
-            mainCanvas.SetActive(false);
-            Cursor.visible = false;
-        }
-
+        
+        hideMainMenu();
         level = gameData.level;
         SetMusic();
+        Cursor.visible = false;
         StartLevel();
     }
 
     void SetBackground()
     {
-        var comp = GameObject.Find("Background");
-        
         var bg = GameObject.Find("BackgroundImage").GetComponent<SpriteRenderer>();
         bg.sprite = Resources.Load(level.ToString("d2"),
             typeof(Sprite)) as Sprite;
     }
-    
+
     void StartLevel()
     {
-        
         SetBackground();
         var yMax = Camera.main.orthographicSize * 0.8f;
         var xMax = Camera.main.orthographicSize * Camera.main.aspect * 0.85f;
@@ -130,13 +126,16 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale > 0)
+        if (Time.timeScale == 0)
         {
-            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var pos = transform.position;
-            pos.x = mousePos.x;
-            transform.position = pos;
+            return;
         }
+
+        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var pos = transform.position;
+        pos.x = mousePos.x;
+        transform.position = pos;
+
 
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -150,21 +149,20 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetButtonDown("Pause"))
         {
             //print(gameData.playFirst + " " + PauseControls.flagPauseMenu);
-            if (PauseControls.flagPauseMenu)
-            {
-                Cursor.visible = true;
-                pauseCanvas.SetActive(true);
-                pauseCanvas.GetComponent<CanvasGroup>().alpha = 1;
-                gameData.playFirst = false;
-                PauseControls.flagPauseMenu = false;
-                Time.timeScale = Time.timeScale > 0 ? 0 : 1;
-            }
-            else if (gameData.playFirst && !PauseControls.flagPauseMenu)
-            {
-                PauseControls.flagPauseMenu = true;
-                Time.timeScale = Time.timeScale > 0 ? 0 : 1;
-            }
-            
+            // if (PauseControls.flagPauseMenu)
+            // {
+            Cursor.visible = true;
+            pauseCanvas.SetActive(true);
+            pauseCanvas.GetComponent<CanvasGroup>().alpha = 1;
+            // gameData.playFirst = false;
+            // PauseControls.flagPauseMenu = false;
+            Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+            // }
+            // else if (gameData.playFirst && !PauseControls.flagPauseMenu)
+            // {
+            //     PauseControls.flagPauseMenu = true;
+            //     Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+            // }
         }
 
 
@@ -185,29 +183,44 @@ public class PlayerScript : MonoBehaviour
 
     void OnGUI()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
         GUI.Label(new Rect(5, 4, Screen.width - 10, 100),
             string.Format(
-                "<color=yellow><size=30>Level <b>{0}</b> Balls <b>{1}</b>" +
+                "<color=white><size=30>Level <b>{0}</b> Balls <b>{1}</b>" +
                 " Score <b>{2}</b></size></color>",
                 gameData.level, gameData.balls, gameData.points));
-        GUIStyle style = new GUIStyle();
-        style.alignment = TextAnchor.UpperRight;
-        GUI.Label(new Rect(5, 14, Screen.width - 10, 100),
-            string.Format(
-                "<color=yellow><size=20><color=white>Space</color>-pause {0}" +
-                " <color=white>N</color>-new" +
-                " <color=white>J</color>-jump" +
-                " <color=white>M</color>-music {1}" +
-                " <color=white>S</color>-sound {2}" +
-                " <color=white>Esc</color>-exit</size></color>",
-                OnOff(Time.timeScale > 0), OnOff(!gameData.music),
-                OnOff(!gameData.sound)), style);
     }
 
     /*void OnApplicationQuit()
     {
         gameData.Save();
     }*/
+
+    void showMainMenu(bool isEnd = false)
+    {
+        Time.timeScale = 0;
+        mainCanvas.SetActive(true);
+        var controls = mainCanvas.GetComponentInChildren<MenuControls>();
+        controls.musicSlider.value = gameData.musicValue;
+        controls.soundSlider.value = gameData.soundValue;
+        controls.musicToggle.isOn = gameData.music;
+        controls.soundToggle.isOn = gameData.sound;
+        controls.quitBtn.gameObject.SetActive(isEnd);
+        if (isEnd)
+        {
+            Cursor.visible = true;
+            gameData.level = 1; // Чтобы начать сначала в конце
+        }
+    }
+
+    void hideMainMenu()
+    {
+        mainCanvas.SetActive(false);
+        Time.timeScale = 1;
+    }
 
     public void SpawnBonus(Vector3 position)
     {
@@ -269,7 +282,7 @@ public class PlayerScript : MonoBehaviour
             var newBall = Instantiate(ballPrefab, ball.transform.position, Quaternion.identity);
             var newBallRb = newBall.GetComponent<Rigidbody2D>();
             newBallRb.isKinematic = false;
-            newBallRb.velocity = Quaternion.AngleAxis(Random.Range(1,359), Vector3.forward) *ballRb.velocity;
+            newBallRb.velocity = Quaternion.AngleAxis(Random.Range(1, 359), Vector3.forward) * ballRb.velocity;
         }
     }
 
@@ -306,12 +319,10 @@ public class PlayerScript : MonoBehaviour
             }
             else
             {
-                Time.timeScale = Time.timeScale > 0 ? 0 : 1;
-                mainCanvas.SetActive(true);
-                Cursor.visible = true;
-                gameData.endMenu = true;
+                // Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+                showMainMenu(true);
+                // gameData.endMenu = true;
             }
-            
         }
     }
 
@@ -322,10 +333,5 @@ public class PlayerScript : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             audioSrc.PlayOneShot(pointSound, volumeScale);
         }
-    }
-
-    string OnOff(bool boolVal)
-    {
-        return boolVal ? "on" : "off";
     }
 }
