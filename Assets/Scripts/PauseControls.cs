@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,37 +11,26 @@ public class PauseControls : MonoBehaviour
     public AudioSource audioSource;
     public Slider musicPauseSlider;
     public Slider soundPauseSlider;
-    // public Slider musicSlider;
-    // public Slider soundSlider;
     public Toggle musicPauseToggle;
     public Toggle soundPauseToggle;
-    // public Toggle musicToggle;
-    // public Toggle soundToggle;
-    
+
     public GameDataScript gameData;
 
-    public void Start()
+    private PlayerScript _playerScript;
+
+    public void attachToPlayerScript(PlayerScript ps)
     {
-        musicPauseToggle.isOn = gameData.music;
-        MusicPauseToggle();
-        soundPauseToggle.isOn = gameData.sound;
-        SoundPauseToggle();
-        musicPauseSlider.value = gameData.musicValue;
-        soundPauseSlider.value = gameData.soundValue;
+        _playerScript = ps;
     }
     
     public void PlayPausePressed()
     {
-        GameObject.Find("PauseCanvas").SetActive(false);
-        // gameData.playFirst = true;
-        Cursor.visible = false;
+        _playerScript.hidePauseMenu();
     }
     
     public void NewGamePressed()
     {
         GameObject.Find("PauseCanvas").SetActive(false);
-        // flagPauseMenu = false;
-        // gameData.playFirst = true;
         gameData.Reset();
         SceneManager.LoadScene("MainScene");
     }
@@ -56,14 +46,12 @@ public class PauseControls : MonoBehaviour
     {
         audioSource.volume = musicPauseSlider.value * 0.1f;
         gameData.musicValue = musicPauseSlider.value;
-        // musicSlider.value = gameData.musicValue;
     }
    
     public void SoundPauseVolume()
     {
         PlayerScript.volumeScale = soundPauseSlider.value * 0.1f;
         gameData.soundValue = soundPauseSlider.value;
-        // soundSlider.value = gameData.soundValue;
     }
     
     public void MusicPauseToggle()
@@ -73,14 +61,12 @@ public class PauseControls : MonoBehaviour
             audioSource.volume = 0;
             gameData.music = false;
             musicPauseSlider.interactable = false;
-            // musicSlider.interactable = false;
         }
         else
         {
             audioSource.volume = musicPauseSlider.value * 0.1f;
             gameData.music = true;
             musicPauseSlider.interactable = true;
-            // musicSlider.interactable = true;
         }
     }
    
@@ -91,14 +77,12 @@ public class PauseControls : MonoBehaviour
             PlayerScript.volumeScale = 0;
             gameData.sound = false;
             soundPauseSlider.interactable = false;
-            soundPauseSlider.interactable = false;
         }
         else
         {
             PlayerScript.volumeScale = soundPauseSlider.value * 0.1f;
             gameData.sound = true;
             soundPauseSlider.interactable = true;
-            // soundSlider.interactable = true;
         }
     }
 }

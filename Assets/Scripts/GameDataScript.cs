@@ -25,6 +25,14 @@ public class GameDataScript : ScriptableObject
         balls = 6;
         points = 0;
         pointsToBall = 0;
+    }
+    
+    public void FullReset()
+    {
+        level = 1;
+        balls = 6;
+        points = 0;
+        pointsToBall = 0;
         music = true;
         sound = true;
         musicValue = 5f;
