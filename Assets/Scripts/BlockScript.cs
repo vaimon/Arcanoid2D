@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,8 +11,13 @@ public class BlockScript : MonoBehaviour
     TMP_Text textComponent;
     public int hitsToDestroy;
     public int points;
-    public bool isBonusBlock = false;
+    public bool isBonusBlock;
+    public bool isMovingBlock;
+    
     private PlayerScript _playerScript;
+    private int deltaDirection = 1;
+
+    private const float deltaX = 0.02f;
 
     void Start()
     {
@@ -24,8 +30,21 @@ public class BlockScript : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (!(Time.timeScale > 0) || !isMovingBlock) return;
+        var pos = transform.position;
+        pos.x = gameObject.transform.position.x + deltaX * deltaDirection;
+        transform.position = pos;
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Block") || collision.gameObject.CompareTag("Wall"))
+        {
+            deltaDirection *= -1;
+            return;
+        }
         hitsToDestroy--;
         if (hitsToDestroy == 0)
         {

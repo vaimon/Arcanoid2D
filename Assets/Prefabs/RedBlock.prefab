@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3447278983400174131}
   - component: {fileID: 3447278983400174132}
   - component: {fileID: 3447278983400174133}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RedBlock
   m_TagString: Block
   m_Icon: {fileID: 0}
@@ -128,7 +128,8 @@ MonoBehaviour:
   textObject: {fileID: 3447278984650904536}
   hitsToDestroy: 4
   points: 40
-  isBonusBlock: 1
+  isBonusBlock: 0
+  isMovingBlock: 0
 --- !u!1 &3447278984650904536
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,7 +141,7 @@ GameObject:
   - component: {fileID: 3447278984650904533}
   - component: {fileID: 3447278984650904534}
   - component: {fileID: 3447278984650904535}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: BlockText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +277,7 @@ GameObject:
   - component: {fileID: 3447278985261878424}
   - component: {fileID: 3447278985261878425}
   - component: {fileID: 3447278985261878426}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
