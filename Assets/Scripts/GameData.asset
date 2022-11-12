@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd58248f04a34a4db14cf8c5e48291a, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  resetOnStart: 0
-  level: 30
-  balls: 625
-  points: 1450
-  pointsToBall: 470
+  resetOnStart: 1
+  level: 1
+  balls: 6
+  points: 0
+  pointsToBall: 0
   music: 1
   sound: 1
-  musicValue: 4.0239444
-  soundValue: 0
-  playFirst: 1
+  musicValue: 5
+  soundValue: 5
   endMenu: 1

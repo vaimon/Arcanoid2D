@@ -35,7 +35,7 @@ public class MenuControls : MonoBehaviour
    
    public void MusicVolume()
    {
-      audioSource.volume = musicSlider.value * 0.1f;
+      audioSource.volume = musicSlider.value;
       gameData.musicValue = musicSlider.value;
    }
    
@@ -55,7 +55,7 @@ public class MenuControls : MonoBehaviour
       }
       else
       {
-         audioSource.volume = musicSlider.value * 0.1f;
+         audioSource.volume = musicSlider.value;
          gameData.music = true;
          musicSlider.interactable = true;
       }

@@ -265,9 +265,14 @@ public class PlayerScript : MonoBehaviour
 
     public void addBallsToGame(int number)
     {
-        addBallsToStash(number);
         var ball = GameObject.FindGameObjectsWithTag("Ball")[0];
         var ballRb = ball.GetComponent<Rigidbody2D>();
+        if (ballRb.isKinematic)
+        {
+            return;
+        }
+        
+        addBallsToStash(number);
         for (int i = 0; i < number; i++)
         {
             var newBall = Instantiate(ballPrefab, ball.transform.position, Quaternion.identity);

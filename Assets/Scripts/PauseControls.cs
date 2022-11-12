@@ -44,7 +44,7 @@ public class PauseControls : MonoBehaviour
     
     public void MusicPauseVolume()
     {
-        audioSource.volume = musicPauseSlider.value * 0.1f;
+        audioSource.volume = musicPauseSlider.value;
         gameData.musicValue = musicPauseSlider.value;
     }
    
@@ -58,13 +58,15 @@ public class PauseControls : MonoBehaviour
     {
         if (!musicPauseToggle.isOn)
         {
-            audioSource.volume = 0;
+            // audioSource.volume = 0;
+            audioSource.Stop();
             gameData.music = false;
             musicPauseSlider.interactable = false;
         }
         else
         {
-            audioSource.volume = musicPauseSlider.value * 0.1f;
+            // audioSource.volume = musicPauseSlider.value;
+            audioSource.Play();
             gameData.music = true;
             musicPauseSlider.interactable = true;
         }
