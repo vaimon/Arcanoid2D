@@ -41,19 +41,26 @@ public class PauseControls : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
-    
+    /// <summary>
+    /// Коллбек для изменения громкости музыки
+    /// </summary>
     public void MusicPauseVolume()
     {
         audioSource.volume = musicPauseSlider.value;
         gameData.musicValue = musicPauseSlider.value;
     }
-   
+    /// <summary>
+    /// Коллбек для изменения громкости звука
+    /// </summary>
     public void SoundPauseVolume()
     {
         PlayerScript.volumeScale = soundPauseSlider.value * 0.1f;
         gameData.soundValue = soundPauseSlider.value;
     }
     
+    /// <summary>
+    /// Коллбек для выключения музыки
+    /// </summary>
     public void MusicPauseToggle()
     {
         if (!musicPauseToggle.isOn)
@@ -71,7 +78,9 @@ public class PauseControls : MonoBehaviour
             musicPauseSlider.interactable = true;
         }
     }
-   
+    /// <summary>
+    /// Коллбек для выключения звука
+    /// </summary>
     public void SoundPauseToggle()
     {
         if (!soundPauseToggle.isOn)

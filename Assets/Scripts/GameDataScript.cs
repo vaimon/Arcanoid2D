@@ -18,7 +18,9 @@ public class GameDataScript : ScriptableObject
     public float soundValue = 10f;
     // public bool playFirst = false; //для блокировки пробела при открытом паузном меню
     public bool endMenu = false; //для проверки, что главное меню теперь заключительное
-    
+    /// <summary>
+    /// Мягкая перезагрузка между играми
+    /// </summary>
     public void Reset()
     {
         level = 1;
@@ -26,7 +28,9 @@ public class GameDataScript : ScriptableObject
         points = 0;
         pointsToBall = 0;
     }
-    
+    /// <summary>
+    /// Полная перезагрузка, в т.ч. настроек
+    /// </summary>
     public void FullReset()
     {
         level = 1;

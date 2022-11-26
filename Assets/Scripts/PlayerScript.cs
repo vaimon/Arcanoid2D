@@ -48,8 +48,8 @@ public class PlayerScript : MonoBehaviour
         pauseCanvas = GameObject.Find("PauseCanvas");
         pauseCanvas.SetActive(false);
         audioSrc = Camera.main.GetComponent<AudioSource>();
-
-        pauseCanvas.GetComponentInChildren<PauseControls>().attachToPlayerScript(this); // Привязываем к кнопке обработчик в этом скрипте
+        // Привязываем к паузе этот скрипт для коллбеков
+        pauseCanvas.GetComponentInChildren<PauseControls>().attachToPlayerScript(this);
         if (!gameStarted)
         {
             gameStarted = true;
@@ -156,6 +156,7 @@ public class PlayerScript : MonoBehaviour
 
     void OnGUI()
     {
+        // в меню не показываем счёт
         if (isMenuActive)
         {
             return;
@@ -172,6 +173,7 @@ public class PlayerScript : MonoBehaviour
         isMenuActive = true;
         Time.timeScale = 0f;
         mainCanvas.SetActive(true);
+        // устанавливаем все актуальные значения
         var controls = mainCanvas.GetComponentInChildren<MenuControls>();
         controls.musicSlider.value = gameData.musicValue;
         controls.soundSlider.value = gameData.soundValue;
@@ -212,7 +214,10 @@ public class PlayerScript : MonoBehaviour
         Cursor.visible = false;
         Time.timeScale = 1f;
     }
-
+    /// <summary>
+    /// Спавнит бонус на месте вектора position
+    /// </summary>
+    /// <param name="position">Точка, в котором заспавнится бонус</param>
     public void SpawnBonus(Vector3 position)
     {
         var bonus = Instantiate(bonusPrefab, position, Quaternion.identity);
@@ -233,6 +238,10 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(BallDestroyedCoroutine());
     }
 
+    /// <summary>
+    /// Добавляет фиксированное число очков к счёту
+    /// </summary>
+    /// <param name="pointsNumber"></param>
     public void AddPoints(int pointsNumber)
     {
         gameData.points += pointsNumber;
@@ -246,6 +255,10 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Меняет скорость движения шариков
+    /// </summary>
+    /// <param name="shift"></param>
     public void changeBallsVelocity(float shift)
     {
         var balls = GameObject.FindGameObjectsWithTag("Ball");
@@ -258,11 +271,19 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Добавляет шарики в банк
+    /// </summary>
+    /// <param name="number"></param>
     public void addBallsToStash(int number)
     {
         gameData.balls += number;
     }
 
+    /// <summary>
+    /// Добавляет шарики в игру на место одного из шариков в игре
+    /// </summary>
+    /// <param name="number"></param>
     public void addBallsToGame(int number)
     {
         var ball = GameObject.FindGameObjectsWithTag("Ball")[0];

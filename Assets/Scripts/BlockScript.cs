@@ -40,6 +40,7 @@ public class BlockScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // Для двигающихся блоков при коллизии только со стенами и блоками меняме направление
         if (collision.gameObject.CompareTag("Block") || collision.gameObject.CompareTag("Wall"))
         {
             deltaDirection *= -1;

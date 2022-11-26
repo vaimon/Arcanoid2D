@@ -14,11 +14,16 @@ public class BonusBaseScript : MonoBehaviour
     private const int pointsPerActivation = 100;
     private const float deltaY = 0.02f;
 
+    /// <summary>
+    /// Действие при активации бонуса
+    /// </summary>
     protected virtual void BonusActivate()
     {
         _playerScript.AddPoints(pointsPerActivation);
     }
-
+    /// <summary>
+    /// Инициализация внешнего вида бонуса
+    /// </summary>
     protected virtual void initializeFields(){}
 
     void initializeBonus()
